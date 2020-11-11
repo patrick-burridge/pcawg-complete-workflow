@@ -1,0 +1,27 @@
+[submodule "Seqware-BWA-Workflow"]
+	path = Seqware-BWA-Workflow
+	url = https://github.com/ICGC-TCGA-PanCancer/Seqware-BWA-Workflow.git
+[submodule "pcawg_delly_workflow"]
+	path = pcawg_delly_workflow
+	url = https://github.com/ICGC-TCGA-PanCancer/pcawg_delly_workflow.git
+[submodule "dkfz_dockered_workflows"]
+	path = dkfz_dockered_workflows
+	url = https://github.com/ICGC-TCGA-PanCancer/dkfz_dockered_workflows.git
+[submodule "CGP-Somatic-Docker"]
+	path = CGP-Somatic-Docker
+	url = https://github.com/ICGC-TCGA-PanCancer/CGP-Somatic-Docker.git
+[submodule "pcawg-gatk-cocleaning"]
+	path = pcawg-gatk-cocleaning
+	url = https://github.com/ICGC-TCGA-PanCancer/pcawg-gatk-cocleaning.git
+[submodule "pcawg-muse"]
+	path = pcawg-muse
+	url = https://github.com/ICGC-TCGA-PanCancer/pcawg-muse.git
+[submodule "OxoG-Dockstore-Tools"]
+	path = OxoG-Dockstore-Tools
+	url = https://github.com/ICGC-TCGA-PanCancer/OxoG-Dockstore-Tools.git
+[submodule "pcawg-consensus-calling-tool"]
+	path = pcawg-consensus-calling-tool
+	url = https://github.com/ICGC-TCGA-PanCancer/pcawg-consensus-calling-tool.git
+[submodule "DKFZBiasFilter"]
+	path = DKFZBiasFilter
+	url = https://github.com/DKFZ-ODCF/DKFZBiasFilter.git
