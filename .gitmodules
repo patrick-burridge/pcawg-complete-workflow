@@ -25,3 +25,9 @@
 [submodule "DKFZBiasFilter"]
 	path = DKFZBiasFilter
 	url = https://github.com/DKFZ-ODCF/DKFZBiasFilter.git
+[submodule "pcawg_sv_merge"]
+	path = pcawg_sv_merge
+	url = https://bitbucket.org/weischenfeldt/pcawg_sv_merge.git
+[submodule "pcawg-broad-wgs-variant-caller"]
+	path = pcawg-broad-wgs-variant-caller
+	url = https://github.com/patrick-burridge/pcawg-broad-wgs-variant-caller.git
