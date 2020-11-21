@@ -20,8 +20,15 @@ requirements:
   SubworkflowFeatureRequirement: {}
 
 inputs:
+  references:
+  tumorbam:
+  normalbam:
+  ramcpuhddetc:
 
 outputs:
+  snv_indel: biasfilter/output_vcf_file
+  sv: svmerge/somatic_sv_vcf
+
 
 steps:
   ########################################
@@ -236,4 +243,20 @@ steps:
     out:
       consensus_zipped_vcf
       consensus_vcf_index
+
+  ########################################
+  # DKFZ Strand Bias Filter              #
+  ########################################
+  biasfilter:
+    run: DKFZBiasFilter/Dockstore.cwl
+    in: 
+      write_qc:
+      input_vcf:
+      input_bam:
+      input_bam_index:
+      reference_sequence:
+      reference_sequence_index:
+    out:
+      output_vcf_file
+      output_qc_folder
 
