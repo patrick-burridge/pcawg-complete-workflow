@@ -1,4 +1,5 @@
-#!/usr/bin/env cwl-runner
+
+# TODO describe and test#!/usr/bin/env cwl-runner
 
 class: Workflow
 id: "pcawg-complete-workflow"
@@ -34,6 +35,7 @@ steps:
   ########################################
   # Alignment                            #
   ########################################
+  # TODO describe and test
   alignment_normal:
     run: Seqware-BWA-Workflow/Dockstore.cwl
     in:
@@ -59,6 +61,7 @@ steps:
   ########################################
   # Sanger-CGP                           #
   ########################################
+  # TODO describe and test
   sanger:
     run: CGP-Somatic-Docker/Dockstore.cwl
     in:
@@ -88,6 +91,7 @@ steps:
   ########################################
   # DKFZ                                 #
   ########################################
+  # TODO describe and test
   dkfz:
     run: dkfz_dockered_workflows/Dockstore.cwl
     in:
@@ -110,6 +114,7 @@ steps:
   ########################################
   # gatk cocleaning                      #
   ########################################
+  # TODO describe and test
   cocleaning:
     run: pcawg-gatk-cocleaning/gatk-cocleaning-workflow.cwl
     in:
@@ -125,6 +130,7 @@ steps:
   ########################################
   # muse                                 #
   ########################################
+  # TODO describe and test
   muse:
     run: pcawg-muse/muse.cwl
     in:
@@ -141,6 +147,16 @@ steps:
   ########################################
   # broad                                #
   ########################################
+  # TODO describe and test
+  # TODO running the WDL with cromwell and pcawg test files, the oxoQ score generation fails 
+  #      because of unknown problem where there is mismatch between output 'chromosome names/counts'
+  #      and the reference file 'chromosome names/counts'. 
+  #      Also obnoxious is that the container requires priveledged to execute and
+  #      doesn't translate into cwl easily.. like it makes more sense to have cwl 
+  #      just executing cromwell.. 
+  # TODO Unsure whether to try to mend container/get oxoQ scores different way or 
+  #      whether to pull something more novel together from actively updated 
+  #      GATK wdl repos.
   broad:
     run pcawg-broad-wgs-variant-caller/pcawg-broad-workflow-tool.cwl
     in:
@@ -160,6 +176,7 @@ steps:
   ########################################
   # delly                                #
   ########################################
+  # TODO describe and test
   delly:
     run: pcawg_delly_workflow/delly_docker/Dockstore.cwl
     in:
@@ -187,6 +204,7 @@ steps:
   ########################################
   # svmerge                              #
   ########################################
+  # TODO describe and test
   svmerge:
     run: pcawg_sv_merge/Dockstore.cwl
     in:
@@ -209,6 +227,7 @@ steps:
   ########################################
   # oxog                                 #
   ########################################
+  # TODO describe and test
   oxog:
     run: OxoG-Dockstore-Tools/oxog_varbam_annotate_wf.cwl
     in:
@@ -231,6 +250,7 @@ steps:
   ########################################
   # snv/indel consensus                  #
   ########################################
+  # TODO describe and test
   consensus:
     run: pcawg-consensus-calling-tool/consensus-calling.cwl
     in:
@@ -247,6 +267,7 @@ steps:
   ########################################
   # DKFZ Strand Bias Filter              #
   ########################################
+  # TODO describe and test
   biasfilter:
     run: DKFZBiasFilter/Dockstore.cwl
     in: 

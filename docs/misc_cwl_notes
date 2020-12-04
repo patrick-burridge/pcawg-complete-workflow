@@ -1,0 +1,103 @@
+cwl misc notes
+
+https://orcid.org/0000-0001-7564-3615
+
+The primary roadblock that prevents just using the variant callers right out of the box (or downloading  is that pcawg stuff is configured to use GRCh37 (hs37d5)
+https://dcc.icgc.org/releases/PCAWG/reference_data/pcawg-bwa-mem 
+ftp://ftp-trace.ncbi.nih.gov/1000genomes/ftp/technical/reference/phase2_reference_assembly_sequence/
+
+and our data is currently aligned to GRCh38 (hg38)
+http://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/
+ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/405/GCA_000001405.15_GRCh38/seqs_for_alignment_pipelines.ucsc_ids/ 
+
+
+https://gatk.broadinstitute.org/hc/en-us/articles/360035890951-Human-genome-reference-builds-GRCh38-or-hg38-b37-hg19
+http://genome.ucsc.edu/blog/2019/02/
+
+
+	pcawg-bwa-mem-workflow 
+		https://github.com/ICGC-TCGA-PanCancer/Seqware-BWA-Workflow/tree/2.7.0
+	pcawg_delly_workflow          (EMBL/DKFZ SV caller)
+		https://github.com/ICGC-TCGA-PanCancer/pcawg_delly_workflow/tree/2.1.0
+	pcawg-dkfz-workflow 
+		https://github.com/ICGC-TCGA-PanCancer/dkfz_dockered_workflows/tree/2.2.0
+	pcawg-sanger-cgp-workflow 
+		https://github.com/ICGC-TCGA-PanCancer/CGP-Somatic-Docker/tree/2.1.0
+
+	pcawg-gatk-cocleaning
+		https://github.com/ICGC-TCGA-PanCancer/pcawg-gatk-cocleaning 
+	pcawg-muse 
+		https://github.com/ICGC-TCGA-PanCancer/pcawg-muse/tree/0.2.0
+
+	pcawg-broad-wgs-variant-callers      big confusion about this being wdl and very little documentation
+		https://github.com/ICGC-TCGA-PanCancer/pcawg-broad-wgs-variant-caller
+		https://gatk.broadinstitute.org/hc/en-us/articles/360037225632-HaplotypeCaller
+			HaplotypeCaller is able to handle non-diploid organisms as well as pooled experiment data. Note however that the algorithms used to calculate variant likelihoods is not well suited to extreme allele frequencies (relative to ploidy) so its use is not recommended for somatic (cancer) variant discovery. For that purpose, use Mutect2 instead.
+	SMuFin   (optional-- see https://github.com/ICGC-TCGA-PanCancer/OxoGWrapperWorkflow/pull/25) 
+		wget http://cg.bsc.es/smufin/download/smufin_0.9.4/smufin_0.9.4_mpi_beta.tar.gz
+		tar -zxvf smufin_0.9.4_mpi_beta.tar.gz
+		cd smufin
+		make
+			https://github.com/KevinSayers/SMuFin_Work/blob/master/Dockerfile
+
+	 	https://groups.google.com/forum/embed/?place=forum/smufin&showsearch=true&showpopout=true&showtabs=false&parenturl=http%3A%2F%2Fcg.bsc.es%2Fsmufin%2Fmailinglist.php%23!topic%2Fsmufin%2FA0riyyzyC5M#!searchin/smufin/runtime/smufin/2YlGWDvePPQ/nQ-lz_bPGTwJ
+
+	 	https://groups.google.com/forum/embed/?place=forum/smufin&showsearch=true&showpopout=true&showtabs=false&parenturl=http%3A%2F%2Fcg.bsc.es%2Fsmufin%2Fmailinglist.php%23!topic%2Fsmufin%2FA0riyyzyC5M#!searchin/smufin/run$20time/smufin/_IZUSmcRQZA/DDDL8ua_AAAJ
+	 		First of all, can you check if you have full permissions on the human reference folder? SMuFin need them to do the execution.
+
+			The memory depends on the sample you use, but I think should be enough for a 30x sample, but if you have a chance to try it with a higher memory you should do it. Some cases, if the sample is complex, the memory increases.
+
+			SMuFin use openmpi to distribute the execution, so you should call SMuFin with it.
+		https://groups.google.com/forum/embed/?place=forum/smufin&showsearch=true&showpopout=true&showtabs=false&parenturl=http%3A%2F%2Fcg.bsc.es%2Fsmufin%2Fmailinglist.php%23!topic%2Fsmufin%2FA0riyyzyC5M#!searchin/smufin/run$20time/smufin/o2DK3_IVXpE/I5FkEi64oEEJ
+			Tipically an execution of SMUFIN in a 16 nodes takes around 4 to 8 hours depending on the coverage, in your analysis I suppose around 8 hours.  35 hours is clearly too much for your execution.
+		https://groups.google.com/forum/embed/?place=forum/smufin&showsearch=true&showpopout=true&showtabs=false&parenturl=http%3A%2F%2Fcg.bsc.es%2Fsmufin%2Fmailinglist.php%23!topic%2Fsmufin%2FA0riyyzyC5M#!searchin/smufin/run$20time/smufin/2S52SX7oVaI/9RgijkVjXZgJ
+			With a 30X sample, using 16 nodes of 16 cores, the analysis should take arround 8h. About the log file, you can see how is SMuFin going on using a redirection of the error on the cluster.
+
+
+	pcawg-oxog-full-workflow  (vestigal child?  pcawg-snv-indel-annotation )
+		https://github.com/ICGC-TCGA-PanCancer/OxoG-Dockstore-Tools/tree/master
+	pcawg-consensus-caller 
+		https://github.com/ICGC-TCGA-PanCancer/pcawg-consensus-calling-tool
+			https://github.com/ljdursi/consensus_call_docker
+				and similarly with indels (although -m is smufin). These VCFs are expected to have gone through the PCAWG annotation pipelines (for OxoG calling and minibam-based annotation).
+	DKFZBiasFilter
+		https://github.com/DKFZ-ODCF/DKFZBiasFilter/tree/1.2.2
+
+	Broad-PoN-Filter
+		https://gatk.broadinstitute.org/hc/en-us/articles/360035890631-Panel-of-Normals-PON-
+		https://gatk.broadinstitute.org/hc/en-us/articles/360037058172-CreateSomaticPanelOfNormals-BETA-
+			The tool takes multiple normal sample callsets produced by Mutect2's tumor-only mode and collates sites present in two or more samples into a sites-only VCF. The PoN captures common artifactual and germline variant sites. Mutect2 then uses the PoN to filter variants at the site-level. 
+
+
+	pcawg_sv_merge 
+		https://bitbucket.org/weischenfeldt/pcawg_sv_merge/src/docker/
+			  --delly DELLY        DELLY output VCF    # somatic_sc_vcf
+			  --snowman SNOWMAN    SNOWMAN output VCF     
+			  --dranger DRANGER  DRANGER output VCF    # sample_broad_dRanger_svaba_DATECODE_somatic_sv_vcf_gz
+			  --brass BRASS        BRASS output VCF
+		To achieve the merged set of somatic SVs, somatic SV calls from SvABA (Broad pipeline), DELLY (DKFZ pipeline), BRASS (Sanger pipeline) and dRanger (Broad pipeline) were combined into a union set
+
+
+    nohup cwltool --debug --non-strict pcawg-bwa-mem-aligner.cwl pcawg-bwa-mem-aligner.job.json > pcawg-bwa-mem-aligner.log 2>&1 &
+
+can cwltool autopull needed files from git and git submodules?
+
+maybe steps
+	make high level repo
+	git submodule all of the lower levels
+		broad caller cwl
+	steps steps steps steps
+
+
+Seqware-BWA-Workflow/Dockstore.cwl
+pcawg-gatk-cocleaning/gatk-cocleaning-workflow.cwl
+pcawg_delly_workflow/delly_docker/Dockstore.cwl
+pcawg-muse/muse.cwl
+pcawg-consensus-calling-tool/consensus-calling.cwl
+OxoG-Dockstore-Tools/oxog_varbam_annotate_wf.cwl
+DKFZBiasFilter/Dockstore.cwl
+dkfz_dockered_workflows/Dockstore.cwl
+CGP-Somatic-Docker/Dockstore.cwl
+pcawg-broad-wgs-variant-caller/pcawg-broad-workflow-tool.cwl
+pcawg_sv_merge/Dockstore.cwl
+
