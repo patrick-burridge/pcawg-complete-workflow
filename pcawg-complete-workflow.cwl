@@ -21,14 +21,26 @@ requirements:
   SubworkflowFeatureRequirement: {}
 
 inputs:
+  tumor:
+    type: File
+    secondaryFiles:
+    - .bai
+  normal:
+    type: File
+    secondaryFiles:
+    - .bai
   references:
-  tumorbam:
-  normalbam:
+    # https://dcc.icgc.org/releases/PCAWG/reference_data/
   ramcpuhddetc:
+    # resource allocations
 
 outputs:
-  snv_indel: biasfilter/output_vcf_file
-  sv: svmerge/somatic_sv_vcf
+  snv_indel: 
+    type: File
+    outputSource: biasfilter/output_vcf_file
+  sv: 
+    type: File
+    outputSource: svmerge/somatic_sv_vcf
 
 
 steps:
@@ -39,10 +51,32 @@ steps:
   alignment_normal:
     run: Seqware-BWA-Workflow/Dockstore.cwl
     in:
-      output_file_basename:
-      download_reference_files:
-      reads:
-      output_dir:
+      output_file_basename: $(inputs.normal.basename)
+      download_reference_files: "false"
+      reads: normal
+      output_dir: "/tmp"
+      reference_gz:
+      reference_gz_fai:
+      reference_gz_pac:
+      reference_gz_amb:
+      reference_gz_bwt:
+      reference_gz_sa:
+      reference_gz_ann:
+    out:
+      merged_output_bai
+      merged_output_unmapped_metrics
+      merged_output_bam
+      merged_output_metrics
+      merged_output_unmapped_bai
+      merged_output_unmapped_bam
+
+  alignment_tumor:
+    run: Seqware-BWA-Workflow/Dockstore.cwl
+    in:
+      output_file_basename: $(inputs.tumor.basename)
+      download_reference_files: "false"
+      reads: tumor
+      output_dir: "/tmp"
       reference_gz:
       reference_gz_fai:
       reference_gz_pac:
